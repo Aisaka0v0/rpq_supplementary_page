@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Product Quantization</title>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$','$']],
+                displayMath: [['$$','$$']],
+                processEscapes: true
+            }
+        });
+    </script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --background-color: #f5f6fa;
+            --card-background: #ffffff;
+            --border-radius: 8px;
+            --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Author section styles */
+        .author-section {
+            text-align: center;
+            padding: 2rem;
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin: 2rem 0;
+        }
+        
+        .author-names {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        
+        .author-affiliations {
+            font-size: 0.95rem;
+            color: #666;
+            margin: 1.5rem auto;
+            text-align: center;
+            max-width: 1100px;  /* 设置更宽的容器宽度 */
+            padding: 0 20px;    /* 添加一些水平内边距 */
+        }
+        
+        .affiliation {
+            margin: 0.8rem auto;
+            text-align: center;
+            max-width: 1000px;  /* 增加最大宽度 */
+            line-height: 1.6;
+            white-space: nowrap;  /* 防止内部换行 */
+            overflow: visible;  /* 确保内容完全显示 */
+        }
+        
+        .ieee-membership {
+            font-style: italic;
+            color: #666;
+        }
+        
+        sup {
+            color: var(--accent-color);
+            font-weight: 500;
+            font-size: 75%;
+        }
+        
+        .author-section a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        
+        .author-section a:hover {
+            text-decoration: underline;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: var(--primary-color);
+            background: var(--background-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .card {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 2rem auto;
+            width: 100%;
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .abstract {
+            text-align: justify;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .citation {
+            background: var(--card-background);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin: 2rem 0;
+            box-shadow: var(--box-shadow);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        audio {
+            width: 200px;
+            margin: 0.5rem 0;
+        }
+
+        audio::-webkit-media-controls-panel {
+            background-color: var(--background-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        #carousel {
+            margin: 2rem 0;
+            transition: transform 0.3s ease;
+        }
+
+        #carousel:hover {
+            transform: scale(1.02);
+        }
+
+        .badges {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .badges img {
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            audio {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bridging the Gap between Continuous and Informative Discrete Representations by Random Product Quantization</h1>
+
+        <div class="author-section">
+            <div class="author-names">
+                Xueqing Li<sup>1,2,3,*</sup>, Hao Ma<sup>1,2,3,*</sup>, Zehan Li<sup>2</sup>, Boyu Zhu<sup>1,2,3</sup>, 
+                Ruihao Jing<sup>1,2,3</sup>, Jian Kang<sup>2</sup>, Jie Li<sup>2</sup>, Chi Zhang<sup>2</sup>, 
+                Xiao-Lei Zhang<sup>1,2,3,†</sup>, <span class="ieee-membership">Senior Member, IEEE</span>, 
+                and Xuelong Li<sup>2</sup>, <span class="ieee-membership">Fellow, IEEE</span>
+            </div>
+
+            <div class="author-affiliations">
+                <div class="affiliation">
+                    <sup>1</sup>School of Marine Science and Technology, Northwestern Polytechnical University, 127 Youyi West Road, Xi'an, Shaanxi 710072, China
+                </div>
+                <div class="affiliation">
+                    <sup>2</sup>Institute of Artificial Intelligence (TeleAI), China Telecom
+                </div>
+                <div class="affiliation">
+                    <sup>3</sup>Research and Development Institute of Northwestern Polytechnical University in Shenzhen, Shenzhen 518063, China
+                </div>
+            </div>
+            <div class="badges">
+                <a href="https://arxiv.org/abs/2504.04721">
+                    <img src="https://img.shields.io/badge/arXiv-2504.04721-brightgreen.svg?style=flat-square" alt="arXiv">
+                </a>
+            </div>
+        </div>
+
+
+        <h2>Abstract</h2>
+        <div class="abstract">
+            Self-supervised learning (SSL) has become a core technique in speech processing, but the high dimensionality of its representations makes discretization essential for improving efficiency. However, existing discretization methods still suffer from significant information loss, resulting in a notable performance gap compared to continuous representations. To overcome these limitations, we propose two quantization-based discretization methods: Product Quantization (PQ) and Random Product Quantization (RPQ). PQ partitions the original feature space into multiple subspaces and independently quantizes each sub-vector, producing a fused set of discrete units that retain diverse information from different subspaces, thereby mitigating the loss associated with single-cluster quantization. RPQ further enhances representation diversity by randomly sampling feature dimensions multiple times to construct sub-vectors, thereby better capturing the variability in the data distribution. Theoretical analysis shows that RPQ reduces the correlation $\rho$ ($0 \leq \rho \leq 1$) between sub-quantizers, and its quantization error is lower-bounded by $\rho\varepsilon_{\text{kms}}$, where $\varepsilon_{\text{kms}}$ is the error of a single K-means quantizer. Experimental results show that, on the combined dataset constructed from LibriSpeech and ML-SUPERB, PQ and RPQ outperform standard K-means discretization, achieving relative improvements of 21.8% and 20.0% in word error rate (WER) on LibriSpeech, and 24.1% and 19.6% in character error rate (CER) on the ML-SUPERB, respectively. Moreover, their performance is competitive with, and in some cases even surpasses, that of continuous SSL representations.
+        </div>
+
+        <div class="card center">
+            <img id="carousel" src="demo/figs/merge.svg" alt="Figure carousel" width="500"/>
+            <div class="carousel-controls">
+                <button id="prevBtn" aria-label="Previous image">&lt;</button>
+                <button id="nextBtn" aria-label="Next image">&gt;</button>
+            </div>
+        </div>
+        <style>
+            .carousel-controls {
+                margin-top: 1rem;
+                display: flex;
+                justify-content: center;
+                gap: 1rem;
+            }
+            .carousel-controls button {
+                padding: 0.5rem 1rem;
+                font-size: 1.2rem;
+                background: var(--secondary-color);
+                color: white;
+                border: none;
+                border-radius: var(--border-radius);
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            .carousel-controls button:hover {
+                background: var(--accent-color);
+            }
+        </style>
+        <script>
+            (function(){
+                const imgs = ['demo/figs/merge.svg', 'demo/figs/rpq.svg'];
+                let idx = 0;
+                const el = document.getElementById('carousel');
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+                
+                // Preload images
+                imgs.forEach(s => { const p = new Image(); p.src = s; });
+                
+                function updateImage(direction) {
+                    if (direction === 'next') {
+                        idx = (idx + 1) % imgs.length;
+                    } else {
+                        idx = (idx - 1 + imgs.length) % imgs.length;
+                    }
+                    if (el) el.src = imgs[idx];
+                }
+
+                // Auto advance
+                const interval = setInterval(() => updateImage('next'), 3000);
+                
+                // Manual controls
+                prevBtn.addEventListener('click', () => {
+                    clearInterval(interval);
+                    updateImage('prev');
+                });
+                
+                nextBtn.addEventListener('click', () => {
+                    clearInterval(interval);
+                    updateImage('next');
+                });
+            })();
+        </script>
+
+        <h2>Supplementary material for "Fig. 6: Heatmap of correlation between feature dimensions of WavLM-Large layer 21."</h2>
+        <div class="center">
+            <object data="demo/figs/100_wavlm_layer21_corr_full.pdf" type="application/pdf" width="100%" height="600px">
+                <p>Your browser does not support PDFs. Please download the PDF to view it: 
+                    <a href="demo/figs/100_wavlm_layer21_corr_full.pdf">Download PDF</a>
+                </p>
+            </object>
+        </div>
+
+        <h2>Reconstructed speech samples</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Original</th>
+                    <th>Reconstructed (SSL)</th>
+                    <th>Reconstructed (K-means)</th>
+                    <th>Reconstructed (PQ)</th>
+                    <th>Reconstructed (RPQ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><audio controls><source src="demo/speech/original/61-70968-0005.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/ssl/61-70968-0005.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/kms/61-70968-0005.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/pq/61-70968-0005.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/rpq/61-70968-0005.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls><source src="demo/speech/original/237-126133-0001.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/ssl/237-126133-0001.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/kms/237-126133-0001.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/pq/237-126133-0001.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/rpq/237-126133-0001.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls><source src="demo/speech/original/672-122797-0031.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/ssl/672-122797-0031.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/kms/672-122797-0031.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/pq/672-122797-0031.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/rpq/672-122797-0031.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls><source src="demo/speech/original/1188-133604-0005.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/ssl/1188-133604-0005.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/kms/1188-133604-0005.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/pq/1188-133604-0005.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/rpq/1188-133604-0005.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls><source src="demo/speech/original/1284-1180-0028.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/ssl/1284-1180-0028.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/kms/1284-1180-0028.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/pq/1284-1180-0028.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/rpq/1284-1180-0028.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls><source src="demo/speech/original/3570-5695-0008.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/ssl/3570-5695-0008.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/kms/3570-5695-0008.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/pq/3570-5695-0008.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/rpq/3570-5695-0008.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls><source src="demo/speech/original/4507-16021-0001.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/ssl/4507-16021-0001.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/kms/4507-16021-0001.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/pq/4507-16021-0001.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/rpq/4507-16021-0001.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls><source src="demo/speech/original/5639-40744-0030.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/ssl/5639-40744-0030.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/kms/5639-40744-0030.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/pq/5639-40744-0030.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/rpq/5639-40744-0030.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls><source src="demo/speech/original/7127-75947-0023.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/ssl/7127-75947-0023.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/kms/7127-75947-0023.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/pq/7127-75947-0023.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/rpq/7127-75947-0023.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls><source src="demo/speech/original/8555-284449-0017.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/ssl/8555-284449-0017.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/kms/8555-284449-0017.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/pq/8555-284449-0017.wav" type="audio/wav"></audio></td>
+                    <td><audio controls><source src="demo/speech/rpq/8555-284449-0017.wav" type="audio/wav"></audio></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Citation</h2>
+        <div class="citation">@article{li2025bridging,
+    title={Bridging the Gap between Continuous and Informative Discrete Representations by Random Product Quantization},
+    author={Li, Xueqing and Ma, Hao and Li, Zehan and Zhu, Boyu and Jing, Ruihao and Kang, Jian and Li, Jie and Zhang, Chi and Zhang, Xiao-Lei and Li, Xuelong},
+    journal={arXiv preprint arXiv:2504.04721},
+    year={2025}
+}</div>
+    </div>
+</body>
+</html>
