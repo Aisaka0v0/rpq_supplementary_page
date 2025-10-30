@@ -1,3 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true
+  }
+});
+</script>
+</head>
+<body>
 
 # Bridging the Gap between Continuous and Informative Discrete Representations by Random Product Quantization
 
@@ -10,7 +27,7 @@ This is the supplementary page of the paper "Bridging the Gap between Continuous
 
 ## Abstract
 
-Self-supervised learning (SSL) has become a core technique in speech processing, but the high dimensionality of its representations makes discretization essential for improving efficiency. However, existing discretization methods still suffer from significant information loss, resulting in a notable performance gap compared to continuous representations. To overcome these limitations, we propose two quantization-based discretization methods: Product Quantization (PQ) and Random Product Quantization (RPQ). PQ partitions the original feature space into multiple subspaces and independently quantizes each sub-vector, producing a fused set of discrete units that retain diverse information from different subspaces\textcolor{red}{, thereby} mitigating the loss associated with single-cluster quantization. RPQ further enhances representation diversity by randomly sampling feature dimensions multiple times to construct sub-vectors, thereby better capturing the variability in the data distribution. Theoretical analysis shows that RPQ reduces the correlation $\rho\ (0 \le \rho \le 1)$ between sub-quantizers, and its quantization error is lower-bounded by $\rho \varepsilon_{\text{kms}}$, where $\varepsilon_{\text{kms}}$ is the error of a single K-means quantizer. Experimental results show that, on the combined dataset constructed from LibriSpeech and ML-SUPERB, PQ and RPQ outperform standard K-means discretization, achieving relative improvements of 21.8\% and 20.0\% in word error rate (WER) on LibriSpeech, and 24.1\% and 19.6\% in character error rate (CER) on the ML-SUPERB, respectively. Moreover, their performance is competitive with, and in some cases even surpasses, that of continuous SSL representations.
+Self-supervised learning (SSL) has become a core technique in speech processing, but the high dimensionality of its representations makes discretization essential for improving efficiency. However, existing discretization methods still suffer from significant information loss, resulting in a notable performance gap compared to continuous representations. To overcome these limitations, we propose two quantization-based discretization methods: Product Quantization (PQ) and Random Product Quantization (RPQ). PQ partitions the original feature space into multiple subspaces and independently quantizes each sub-vector, producing a fused set of discrete units that retain diverse information from different subspaces, thereby mitigating the loss associated with single-cluster quantization. RPQ further enhances representation diversity by randomly sampling feature dimensions multiple times to construct sub-vectors, thereby better capturing the variability in the data distribution. Theoretical analysis shows that RPQ reduces the correlation $\rho$ ($0 \leq \rho \leq 1$) between sub-quantizers, and its quantization error is lower-bounded by $\rho\varepsilon_{\text{kms}}$, where $\varepsilon_{\text{kms}}$ is the error of a single K-means quantizer. Experimental results show that, on the combined dataset constructed from LibriSpeech and ML-SUPERB, PQ and RPQ outperform standard K-means discretization, achieving relative improvements of 21.8% and 20.0% in word error rate (WER) on LibriSpeech, and 24.1% and 19.6% in character error rate (CER) on the ML-SUPERB, respectively. Moreover, their performance is competitive with, and in some cases even surpasses, that of continuous SSL representations.
 
 <div align="center">
   <img id="carousel" src="demo/figs/merge.svg" alt="Figure carousel" width="500"/>
@@ -127,9 +144,6 @@ Self-supervised learning (SSL) has become a core technique in speech processing,
 
 
 
-
-
-
 ## Citation
 ```
 @article{li2025bridging,
@@ -139,3 +153,6 @@ Self-supervised learning (SSL) has become a core technique in speech processing,
   year={2025}
 }
 ```
+
+</body>
+</html>
